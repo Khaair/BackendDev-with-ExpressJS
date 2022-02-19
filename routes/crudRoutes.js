@@ -38,6 +38,24 @@ router.delete("/delete/:id", async (req, res) => {
   });
 
 
+  router.post("/update/:id", async (req, res) => {
+    console.log(req.params.id, req.body);
+  
+    try {
+      let updatee = await crudModel.findByIdAndUpdate({_id:req.params.id},{
+        title: req.body.title,
+        author: req.body.author,
+        body: req.body.body,
+      });
+  
+  
+      res.send({ info: "updated" ,up: updatee});
+    } catch (err) {
+      res.send({ info: "error ocuured" });
+    }
+  });
+
+
 
 
 module.exports = router;
