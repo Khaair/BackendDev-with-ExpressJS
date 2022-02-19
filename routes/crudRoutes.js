@@ -1,22 +1,41 @@
 const express = require("express");
 const router = express.Router();
+const crudModel = require("../models/crud");
 
 
-router.get("/show",(req, res) => {
 
-    res.send({"Name": "lll","Age" : 24})
+router.get("/show", async (req, res) => {
+    let data = await crudModel.find();
+    res.send(data);
+  });
   
-});
 
 
 
-router.post("/save",(req, res) => {
+router.post("/save",  async  (req, res) => {
 
     console.log(req.body);
 
-    res.send({"Name": "lll","Age" : 24,"Class": "Ten"})
+    const tt = new crudModel({
+        title: req.body.title,
+        author: req.body.author,
+        body: req.body.body,
+      });
+
+      try {
+        const a1 = await tt.save();
+        res.json(a1);
+      } catch (err) {
+        res.send("Error");
+      }
   
 });
+
+router.delete("/delete/:id", async (req, res) => {
+    console.log(req.params.id);
+    let data = await crudModel.deleteOne({ _id: req.params.id });
+    res.send({ msg: "deleted", data: data });
+  });
 
 
 

@@ -5,6 +5,9 @@ const port = 4000
 const mongoose = require('mongoose');
 
 
+app.use(express.json())
+
+
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser:true})
 const con = mongoose.connection
 
