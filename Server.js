@@ -1,30 +1,27 @@
-const express = require('express')
-const app = express()
-const cors = require('cors');
-const port = 4000
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const port = 4000;
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
+app.use(express.json());
 
-app.use(express.json())
+mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
+const con = mongoose.connection;
 
+con.on("open", () => {
+  console.log("connected...");
+});
 
-mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser:true})
-const con = mongoose.connection
+app.use(cors());
 
-con.on('open', () => {
-    console.log('connected...')
-})
+const routes = require("./routes/crudRoutes");
+app.use("/api", routes);
 
-app.use(cors())
-
-const routes=require('./routes/crudRoutes')
-app.use('/api',routes)
-
-
-const routess=require('./routes/crudRoutes')
-app.use('/ap',routess)
+const routess = require("./routes/crudRoutes");
+app.use("/ap", routess);
 
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`)
-})
+  console.log(`Server started on port ${port}`);
+});
